@@ -12,8 +12,9 @@ export default class App extends React.Component {
   }
   async componentDidMount() {
 
-    const response = await fetch('http://192.168.1.33:8080/all');
+    const response = await fetch('http://192.168.1.33:8080/parkingspots');
     const data = await response.json();
+    console.log(data.result)
     this.setState({
       parkings: data.result
     })

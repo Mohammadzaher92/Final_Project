@@ -3,7 +3,8 @@ import path from "path";
 import multer from "multer";
 
 import initialize_ParkingSpots from "./controllers/ParkingSpots.js"
-import initialize_Users from "./controllers/Users"
+import initialize_Users from "./controllers/Users.js"
+import initialize_Employee from "./controllers/Employee.js"
 
 
 //Please, don't forget to change the directory you are importing the controllers from, accordingly.
@@ -25,6 +26,7 @@ const upload = multer({ storage: multerStorage })
 const start = async () => {
     const controller_ParkingSpots = await initialize_ParkingSpots();
     const controller_Users = await initialize_Users();
+    const controller_Employee = await initialize_Employee();
 
     app.get("/parkingspots", async (req, res, next) => {
         try {
@@ -93,8 +95,11 @@ const start = async () => {
         try {
             const { id } = req.params;
             const { name, password, email, plate_number } = req.body;
-            console.log('file', filename)
-            const image = req.file && req.file.filename;
+            // const image = req.file && req.file.filename;
+            let image = '';
+            if (req.file) {
+                image = req.file.filename
+            }
             const result = await controller_Users.updateUser(id, {
                 name,
                 password,
@@ -108,6 +113,103 @@ const start = async () => {
             next(err);
         }
     });
+    app.post('/createuser', upload.single('image'), async (req, res, next) => {
+        try {
+            const { name, email, password, plate_number } = req.body;
+            let image = '';
+            if (req.file) {
+                image = req.file.filename
+            }
+            const id = await controller_Users.createUser({
+                name,
+                email,
+                password,
+                plate_number,
+                image
+            });
+            if (id) {
+                res.json({ done: true, result: id });
+            }
+        } catch (err) {
+            next(err);
+        }
+    });
+
+    ///////////
+
+    app.get("/employee", async (req, res, next) => {
+        try {
+
+            const result = await controller_Employee.getEmployee();
+
+            res.json({ success: true, result });
+
+            return (result);
+
+        }
+        catch (err) {
+            next(err);
+        }
+    })
+
+    app.get("/employeebyid/:id", async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            console.log("hello", id)
+            const result = await controller_Employee.getEmployeeByid(id);
+            res.json({ success: true, result });
+            return (result);
+        }
+        catch (err) {
+            next(err);
+        }
+
+    })
+
+    app.delete('/deleteemployee/:id', async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const result = await controller_Employee.deleteEmployee(id);
+            res.json({ success: true, result });
+        } catch (err) {
+            next(err);
+        }
+    });
+
+    app.put('/updateemployee/:id', async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const { employee_name, password, parking_spots_id } = req.body;
+            const result = await controller_Employee.updateEmployee(id, {
+                employee_name,
+                password,
+                parking_spots_id
+
+            });
+            res.json({ success: true, result });
+            return result
+        } catch (err) {
+            next(err);
+        }
+    });
+
+    app.post('/createemployee', async (req, res, next) => {
+        try {
+            const { employee_name, password, parking_spots_id } = req.body;
+
+            const id = await controller_Employee.createEmployee({
+                employee_name,
+                password,
+                parking_spots_id
+            });
+            if (id) {
+                res.json({ done: true, result: id });
+            }
+        } catch (err) {
+            next(err);
+        }
+    });
+
 
 
 

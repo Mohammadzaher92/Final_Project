@@ -52,20 +52,42 @@ const initializeUsers = async () => {
             if (!id || !name || !email || !password || !image || !plate_number) {
                 throw new Error("you must provide an id and/or one of the inputs");
             }
-            const stmt = `UPDATE Users SET email=("${email}"), name=("${name}"), image=("${image}"), password=(${password}), plate_number=("${plate_number}") WHERE user_id=(${id})`;
-            const result = await db.all(stmt);
-            return (result);
+            const stmt = `UPDATE Users SET email="${email}", name="${name}", image="${image}", password="${password}", plate_number="${plate_number}" WHERE user_id="${id}"`;
+            // update user data
+            await db.run(stmt);
+
+            const user = await db.get("SELECT * FROM Users WHERE user_id=?", [id])
+            return user;
         } catch (err) {
             throw new Error("Can't update user details")
         }
     };
+
+    const createUser = async (props) => {
+        const { name, email, password, image, plate_number } = props;
+        console.log(props)
+        try {
+            if (!props || !name || !email || !password || !image | !plate_number) {
+                throw new Error("you must provide all the fields");
+            }
+            const stmt = `INSERT INTO Users (name, email, password, image, plate_number, created_at ) VALUES ("${name}", "${email}", "${password}", "${image}", "${plate_number}", datetime('now'))`;
+            console.log(stmt)
+            const rows = await db.run(stmt);
+            const id = rows.stmt.lastID;
+            const user = await db.get('SELECT * FROM Users WHERE user_id=?', [id])
+            return user;
+        } catch (err) {
+            throw new Error(err, " cannot insert user");
+        };
+    }
 
 
     const controller = {
         getUsers,
         getUsersByid,
         deleteUsers,
-        updateUser
+        updateUser,
+        createUser
     };
     return controller
 };
