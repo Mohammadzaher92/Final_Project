@@ -62,6 +62,7 @@ Secure with CTV`,
 
 class ParkingMap extends Component {
   state = {
+    parkings: [],
     hours: {},
     active: null,
     activeModal: null,

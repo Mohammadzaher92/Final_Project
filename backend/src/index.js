@@ -289,13 +289,6 @@ const start = async () => {
             next(err);
         }
     });
-
-
-
-
-
-
-
 }
 start();
 app.listen(8080, () => console.log("server listening on port 8080"));

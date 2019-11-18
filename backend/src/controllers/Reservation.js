@@ -80,7 +80,7 @@ const initialize_Reservation = async () => {
             if (!props || !status || !period || !parking_spots_id || !user_id) {
                 throw new Error("you must provide all the fields");
             }
-            var ticket = suid(16)
+            const ticket = suid(16)
 
             //const date = new datet
             const stmt = `INSERT INTO Reservation (status, period, parking_spots_id,user_id,ticket, created_at)
