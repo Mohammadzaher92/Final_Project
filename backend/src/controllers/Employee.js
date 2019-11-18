@@ -72,12 +72,13 @@ const initialize_Employee = async () => {
             if (!props || !employee_name || !password || !parking_spots_id) {
                 throw new Error("you must provide all the fields");
             }
+            //const date = new datet
             const stmt = `INSERT INTO Employee (employee_name, password, parking_spots_id, created_at)
              VALUES ("${employee_name}", "${password}", ${parking_spots_id}, datetime('now'))`;
             console.log(stmt)
             const rows = await db.run(stmt);
             const result = rows.stmt.lastID;
-            const user = await db.get('SELECT * FROM Employee WHERE employee_id=?', [id])
+            // const user = await db.get('SELECT * FROM Employee WHERE employee_id=?', [result])
             return result;
         } catch (err) {
             throw new Error(err, " cannot insert employee");

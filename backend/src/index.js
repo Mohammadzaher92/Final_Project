@@ -5,6 +5,7 @@ import multer from "multer";
 import initialize_ParkingSpots from "./controllers/ParkingSpots.js"
 import initialize_Users from "./controllers/Users.js"
 import initialize_Employee from "./controllers/Employee.js"
+import initialize_Reservation from "./controllers/Reservation.js"
 
 
 //Please, don't forget to change the directory you are importing the controllers from, accordingly.
@@ -27,6 +28,7 @@ const start = async () => {
     const controller_ParkingSpots = await initialize_ParkingSpots();
     const controller_Users = await initialize_Users();
     const controller_Employee = await initialize_Employee();
+    const controller_Reservation = await initialize_Reservation();
 
     app.get("/parkingspots", async (req, res, next) => {
         try {
@@ -196,7 +198,7 @@ const start = async () => {
     app.post('/createemployee', async (req, res, next) => {
         try {
             const { employee_name, password, parking_spots_id } = req.body;
-
+            console.log(req.body)
             const id = await controller_Employee.createEmployee({
                 employee_name,
                 password,
@@ -209,6 +211,50 @@ const start = async () => {
             next(err);
         }
     });
+    /////////////////////////////
+
+    app.get("/reservation", async (req, res, next) => {
+        try {
+
+            const result = await controller_Reservation.getReservation();
+
+            res.json({ success: true, result });
+
+            return (result);
+
+        }
+        catch (err) {
+            next(err);
+        }
+    })
+
+
+    app.get("/reservationbyid/:id", async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            // console.log("hello", id)
+            const result = await controller_Reservation.getReservationByid(id);
+            res.json({ success: true, result });
+            return (result);
+        }
+        catch (err) {
+            next(err);
+        }
+
+    });
+
+    app.delete('/deletereservation/:id', async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const result = await controller_Reservation.deleteReservation(id);
+            res.json({ success: true, result });
+        } catch (err) {
+            next(err);
+        }
+    });
+
+
+
 
 
 
