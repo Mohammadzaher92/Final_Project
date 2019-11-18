@@ -253,6 +253,42 @@ const start = async () => {
         }
     });
 
+    app.put('/updatereservation/:id', async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const { staus, user_id, parking_spots_id, ticket, period } = req.body;
+            const result = await controller_Reservation.updateReservation(id, {
+                staus,
+                user_id,
+                parking_spots_id,
+                ticket,
+                period
+
+            });
+            res.json({ success: true, result });
+            return result
+        } catch (err) {
+            next(err);
+        }
+    });
+    app.post('/createreservation', async (req, res, next) => {
+        try {
+            console.log("here")
+            const { status, period, parking_spots_id, user_id } = req.body;
+            console.log(req.body)
+            const id = await controller_Reservation.createReservation({
+                status,
+                period,
+                parking_spots_id,
+                user_id
+            });
+            if (id) {
+                res.json({ done: true, result: id });
+            }
+        } catch (err) {
+            next(err);
+        }
+    });
 
 
 
