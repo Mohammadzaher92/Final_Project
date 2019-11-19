@@ -137,6 +137,16 @@ const start = async () => {
         }
     });
 
+    app.get('/login', async (req, res, next) => {
+        const { email, password } = req.query;
+        const id = await controller_Users.login(email, password);
+        console.log(id)
+        if (id) {
+            res.json({ success: true, result: id });
+        }
+        else
+            res.json({ success: false, message: "incorrect username and/or password" });
+    });
     ///////////
 
     app.get("/employee", async (req, res, next) => {
@@ -274,16 +284,16 @@ const start = async () => {
     app.post('/createreservation', async (req, res, next) => {
         try {
             console.log("here")
-            const { status, period, parking_spots_id, user_id } = req.body;
+            const { period, parking_spots_id, user_id } = req.body;
             console.log(req.body)
-            const id = await controller_Reservation.createReservation({
-                status,
+            const ticket = await controller_Reservation.createReservation({
+
                 period,
                 parking_spots_id,
                 user_id
             });
-            if (id) {
-                res.json({ done: true, result: id });
+            if (ticket) {
+                res.json({ done: true, result: ticket });
             }
         } catch (err) {
             next(err);

@@ -74,22 +74,22 @@ const initialize_Reservation = async () => {
         }
     };
     const createReservation = async (props) => {
-        const { status, period, parking_spots_id, user_id } = props;
+        const { period, parking_spots_id, user_id } = props;
         console.log(props)
         try {
-            if (!props || !status || !period || !parking_spots_id || !user_id) {
+            if (!props || !period || parking_spots_id === null || !user_id) {
                 throw new Error("you must provide all the fields");
             }
             const ticket = suid(16)
 
             //const date = new datet
             const stmt = `INSERT INTO Reservation (status, period, parking_spots_id,user_id,ticket, created_at)
-             VALUES ("${status}", "${period}", ${parking_spots_id},${user_id},'${ticket}', datetime('now'))`;
+             VALUES ("available", "${period}", ${parking_spots_id},${user_id},'${ticket}', datetime('now'))`;
             console.log(stmt)
             const rows = await db.run(stmt);
             const result = rows.stmt.lastID;
             // const user = await db.get('SELECT * FROM Employee WHERE employee_id=?', [result])
-            return result;
+            return ticket;
         } catch (err) {
             throw new Error(err, " cannot insert reservation");
         };

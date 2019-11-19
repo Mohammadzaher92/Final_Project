@@ -1,7 +1,7 @@
 import React from "react";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import { Text, View, Button } from "react-native";
+import { Text, View, Button, AsyncStorage } from "react-native";
 import { StackActions, NavigationActions } from "react-navigation";
 
 import "react-native-gesture-handler";
@@ -38,9 +38,11 @@ class App extends React.Component {
     };
   }
   async componentDidMount() {
-    const response = await fetch("http://192.168.1.12:8080/parkingspots");
+    const user_id = await AsyncStorage.getItem("user_id");
+    console.log("id", user_id)
+    const response = await fetch("http://192.168.1.33:8080/parkingspots");
     const data = await response.json();
-    console.log(data.result);
+    // console.log(data.result);
     this.setState({
       parkings: data.result
     });
@@ -58,7 +60,7 @@ const AppNavigator = createStackNavigator(
     Login: Login
   },
   {
-    initialRouteName: "SignUp"
+    initialRouteName: "Login"
   }
 );
 

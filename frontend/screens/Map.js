@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View, FlatList, Dimensions, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import { Text, StyleSheet, View, FlatList, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Button, AsyncStorage } from 'react-native'
 import MapView from 'react-native-maps';
 import Modal from 'react-native-modal';
 import Dropdown from 'react-native-modal-dropdown';
@@ -24,7 +24,7 @@ const parkingsCapacity = [
     description: `Description about this parking lot
 
 Open year 2018
-Secure with CTV`,
+Secure with CCTV`,
   },
   {
     id: 2,
@@ -40,7 +40,7 @@ Secure with CTV`,
     description: `Description about this parking lot
 
 Open year 2014
-Secure with CTV`,
+Secure with CCTV`,
   },
   {
     id: 3,
@@ -56,7 +56,7 @@ Secure with CTV`,
     description: `Description about this parking lot
 
 Open year 2019
-Secure with CTV`,
+Secure with CCTV`,
   },
 ];
 
@@ -66,6 +66,7 @@ class ParkingMap extends Component {
     hours: {},
     active: null,
     activeModal: null,
+    period: {}
   }
 
   componentWillMount() {
@@ -96,7 +97,7 @@ class ParkingMap extends Component {
       <View style={styles.header}>
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <Text style={styles.headerTitle}>Detected location</Text>
-          <Text style={styles.headerLocation}>DAWN TOWN,BEIRUT</Text>
+          <Text style={styles.headerLocation}>DOWN TOWN,BEIRUT</Text>
         </View>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end', }}>
 
@@ -191,6 +192,21 @@ class ParkingMap extends Component {
       />
     )
   }
+  reserve = async (parking_spots_id, period) => {
+    const user_id = await AsyncStorage.getItem("user_id");
+    const response = await fetch('http://192.168.1.33:8080/createreservation', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ user_id, parking_spots_id, period })
+    });
+    const result = await response.json();
+    console.log("r", result.result)
+    alert("Your ticket number is: " + result.result + "\n" + "Show this ticket to emloyee ")
+
+  }
 
   renderModal() {
     const { activeModal, hours } = this.state;
@@ -245,9 +261,10 @@ class ParkingMap extends Component {
           </View>
           <View>
             <TouchableOpacity style={styles.payBtn}>
-              <Text style={styles.payText}>
-                Proceed to pay ${activeModal.price * hours[activeModal.parking_spots_id]}
-              </Text>
+              <Button style={styles.payText}
+                title={"Proceed to pay" + " " + activeModal.price * hours[activeModal.parking_spots_id] + "" + "$"}
+                onPress={() => this.reserve(activeModal.parking_spots_id, hours)} />
+
               <FontAwesome name='angle-right' size={theme.SIZES.icon * 1.75} color={theme.COLORS.white} />
             </TouchableOpacity>
           </View>
@@ -314,6 +331,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.SIZES.base * 2,
     paddingTop: theme.SIZES.base * 2.5,
     paddingBottom: theme.SIZES.base * 1.5,
+
   },
   headerTitle: {
     color: theme.COLORS.gray,
@@ -458,7 +476,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: theme.SIZES.base * 1.5,
-    backgroundColor: theme.COLORS.red,
+    backgroundColor: theme.COLORS.red
   },
   payText: {
     fontWeight: '600',

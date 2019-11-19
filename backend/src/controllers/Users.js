@@ -80,14 +80,30 @@ const initializeUsers = async () => {
             throw new Error(err, " cannot insert user");
         };
     }
-
+    const login = async (email, password) => {
+        try {
+            const stmt = `select Users.user_id from Users where email = '${email}' and password='${password}';`;
+            console.log(stmt)
+            const rows = await db.get(stmt);
+            if (rows) {
+                return rows.user_id
+            }
+            else {
+                return null;
+            }
+        }
+        catch (err) {
+            throw new Error(err, "cannot find")
+        }
+    }
 
     const controller = {
         getUsers,
         getUsersByid,
         deleteUsers,
         updateUser,
-        createUser
+        createUser,
+        login
     };
     return controller
 };
