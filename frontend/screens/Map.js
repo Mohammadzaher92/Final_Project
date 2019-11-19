@@ -279,17 +279,20 @@ class ParkingMap extends Component {
     const result = await response.json();
     console.log("r", result.result);
     Alert.alert(
-      null,
+      "",
       "Your ticket number is: " +
-        result.result.ticket +
-        "\n" +
-        result.result.parkingSpot.title +
-        "\n" +
-        result.result.parkingSpot.price * result.result.period +
-        " $ \n" +
-        result.result.period +
-        " hours \n" +
-        "Show this ticket to emloyee ",
+      result.result.ticket +
+      "\n" + "\n" + "Your parking spot is in " +
+      result.result.parkingSpot.title +
+      "\n" + "\n" +
+      "Booking period :  " +
+      result.result.period + "" +
+      " Hours \n" +
+      "\n" + "Total price : " + "" +
+      result.result.parkingSpot.price * result.result.period +
+      " $ \n" + "\n" + "\n" +
+
+      "Take screenshot to show this ticket to emloyee ",
       [{ text: "OK", onPress: () => console.log("OK Pressed") }],
       { cancelable: false }
     );
