@@ -5,6 +5,7 @@ import Constants from "expo-constants";
 
 import {
   View,
+  Text,
   Image,
   Button,
   TextInput,
@@ -89,6 +90,7 @@ export default class Login extends React.Component {
   render() {
     // let avatar = this.state.avatar;
     return (
+
       <ScrollView style={{ padding: 30 }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
 

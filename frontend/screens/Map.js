@@ -194,6 +194,7 @@ class ParkingMap extends Component {
   }
   reserve = async (parking_spots_id, period) => {
     const user_id = await AsyncStorage.getItem("user_id");
+    console.log('period', period)
     const response = await fetch('http://192.168.1.33:8080/createreservation', {
       method: 'POST',
       headers: {
