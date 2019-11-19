@@ -15,7 +15,7 @@ import {
   KeyboardAvoidingView,
   Platform
 } from "react-native";
-
+import { API_URL } from "../config";
 export default class SignUp extends React.Component {
   state = {
     username: "",
@@ -48,7 +48,7 @@ export default class SignUp extends React.Component {
     formData.append("password", this.state.password);
     formData.append("email", this.state.email);
     console.log(formData);
-    const response = await fetch("http://192.168.6.107:8080/signup", {
+    const response = await fetch(`${API_URL}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "multipart/form-data"

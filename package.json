@@ -8,9 +8,8 @@
     "backend": "cd backend && npm start",
     "frontend": "cd frontend && npm start",
     "start": "concurrently --kill-others-on-fail --names \"backend,frontend\" \"npm run backend\" \"npm run frontend\"",
-    "postinstall":"cd front && npm install && cd .. && cd back && npm install"
+    "postinstall": "cd frontend && npm install && cd .. && cd backend && npm install"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mohammadzaher92/Final-Project.git"

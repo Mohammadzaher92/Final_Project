@@ -10,7 +10,8 @@ import Map from "./screens/Map";
 import SignUp from "./screens/SignUp";
 import Login from "./screens/Login";
 
-const resetAction = StackActions.reset({
+import { API_URL } from "./config";
+export const resetAction = StackActions.reset({
   App: App,
   index: 0,
   actions: [NavigationActions.navigate({ routeName: "App" })]
@@ -39,8 +40,8 @@ class App extends React.Component {
   }
   async componentDidMount() {
     const user_id = await AsyncStorage.getItem("user_id");
-    console.log("id", user_id)
-    const response = await fetch("http://192.168.1.33:8080/parkingspots");
+    console.log("id", user_id);
+    const response = await fetch(`${API_URL}/parkingspots`);
     const data = await response.json();
     // console.log(data.result);
     this.setState({

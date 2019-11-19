@@ -2,7 +2,6 @@ import React from "react";
 import Constants from "expo-constants";
 // import * as Permissions from "expo-permissions";
 // import * as ImagePicker from "expo-image-picker";
-
 import {
   View,
   Text,
@@ -17,6 +16,9 @@ import {
   Platform
 } from "react-native";
 
+import { resetAction } from "../App";
+
+import { API_URL } from "../config";
 export default class Login extends React.Component {
   state = {
     email: "",
@@ -27,10 +29,10 @@ export default class Login extends React.Component {
     this.setState({ [key]: val });
   };
 
-
   Login = async () => {
-
-    const response = await fetch(`http://192.168.1.33:8080/login?email=${this.state.email}&password=${this.state.password}`)
+    const response = await fetch(
+      `${API_URL}/login?email=${this.state.email}&password=${this.state.password}`
+    );
     const login = await response.json();
     console.log("data", login);
     console.log("data.suc", login.success);
@@ -49,12 +51,12 @@ export default class Login extends React.Component {
     ) {
       alert("Complete your login");
       return false;
-    }
-    else {
+    } else {
       const login_response = await this.Login();
 
       if (login_response) {
-        this.props.navigation.navigate("App")
+        // this.props.navigation.navigate("App");
+        this.props.navigation.dispatch(resetAction);
         // Actions.profile();
       } else {
         alert("Please check your email && password");
@@ -90,11 +92,10 @@ export default class Login extends React.Component {
   render() {
     // let avatar = this.state.avatar;
     return (
-
       <ScrollView style={{ padding: 30 }}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-
-        </View>
+        <View
+          style={{ flexDirection: "row", justifyContent: "space-between" }}
+        ></View>
         <KeyboardAvoidingView style={{ marginTop: 100 }}>
           <TextInput
             style={styles.input}
@@ -126,7 +127,5 @@ const styles = StyleSheet.create({
     margin: 10,
     color: "white",
     borderRadius: 14
-
   }
-
 });
