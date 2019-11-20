@@ -1,7 +1,5 @@
 import React from "react";
 import Constants from "expo-constants";
-// import * as Permissions from "expo-permissions";
-// import * as ImagePicker from "expo-image-picker";
 import {
   View,
   Text,
@@ -13,11 +11,11 @@ import {
   AsyncStorage,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Platform
+  Platform, ImageBackground
 } from "react-native";
 
 import { resetAction } from "../App";
-
+import LoginImage from "../assets/login.png"
 import { API_URL } from "../config";
 export default class Login extends React.Component {
   state = {
@@ -92,30 +90,34 @@ export default class Login extends React.Component {
   render() {
     // let avatar = this.state.avatar;
     return (
-      <ScrollView style={{ padding: 30 }}>
-        <View
-          style={{ flexDirection: "row", justifyContent: "space-between" }}
-        ></View>
-        <KeyboardAvoidingView style={{ marginTop: 100 }}>
-          <TextInput
-            style={styles.input}
-            placeholder="Email:"
-            autoCapitalize="none"
-            placeholderTextColor="white"
-            onChangeText={val => this.onChangeText("email", val)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Password:"
-            secureTextEntry={true}
-            autoCapitalize="none"
-            placeholderTextColor="white"
-            onChangeText={val => this.onChangeText("password", val)}
-          />
+      <ImageBackground source={LoginImage} style={{ flex: 1, width: null, height: 150, resizeMode: "covere" }}>
 
-          <Button title="Login" onPress={this._onPress} />
-        </KeyboardAvoidingView>
-      </ScrollView>
+        <ScrollView style={{ padding: 30 }}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          ></View>
+          <KeyboardAvoidingView style={{ marginTop: 100 }}>
+            <TextInput
+              style={styles.input}
+              placeholder="Email:"
+              autoCapitalize="none"
+              placeholderTextColor="white"
+              onChangeText={val => this.onChangeText("email", val)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Password:"
+              secureTextEntry={true}
+              autoCapitalize="none"
+              placeholderTextColor="white"
+              onChangeText={val => this.onChangeText("password", val)}
+            />
+
+            <Button title="Login" onPress={this._onPress} />
+          </KeyboardAvoidingView>
+        </ScrollView>
+      </ImageBackground>
+
     );
   }
 }

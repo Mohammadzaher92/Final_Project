@@ -7,7 +7,6 @@ import {
   Dimensions,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Button,
   Alert,
   AsyncStorage
 } from "react-native";
@@ -117,11 +116,7 @@ class ParkingMap extends Component {
           <Text style={styles.headerLocation}>DOWN TOWN,BEIRUT</Text>
         </View>
         <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "flex-end" }}
-        >
-          {/* <TouchableWithoutFeedback>
-            <Ionicons name="ios-menu" size={theme.SIZES.icon * 3.0} />
-          </TouchableWithoutFeedback> */}
+          style={{ flex: 1, justifyContent: "center", alignItems: "flex-end" }}   >
         </View>
       </View>
     );
@@ -292,7 +287,7 @@ class ParkingMap extends Component {
       result.result.parkingSpot.price * result.result.period +
       " $ \n" + "\n" + "\n" +
 
-      "Take screenshot to show this ticket to emloyee ",
+      "Note: take a screenshot to show this ticket to employee ",
       [{ text: "OK", onPress: () => console.log("OK Pressed") }],
       { cancelable: false }
     );
